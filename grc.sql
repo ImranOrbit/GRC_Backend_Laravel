@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2026 at 06:28 AM
+-- Generation Time: Mar 14, 2026 at 09:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -32,6 +32,8 @@ CREATE TABLE `accounting_blog` (
   `text` varchar(255) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `content` text NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -52,6 +54,8 @@ CREATE TABLE `blogs` (
   `date` date NOT NULL,
   `tag` varchar(255) NOT NULL,
   `content` text NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -67,6 +71,8 @@ CREATE TABLE `business_studies_blog` (
   `text` varchar(255) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `content` text NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -81,6 +87,8 @@ CREATE TABLE `collaborations` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `text` text NOT NULL,
   `image` varchar(255) DEFAULT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -97,6 +105,8 @@ CREATE TABLE `country_registrations` (
   `email` varchar(255) NOT NULL,
   `country` varchar(255) NOT NULL,
   `universities` varchar(255) NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -112,6 +122,8 @@ CREATE TABLE `engineering_blog` (
   `text` text NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `content` longtext NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -143,6 +155,8 @@ CREATE TABLE `food_hospitality_blog` (
   `text` text NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `content` longtext NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -158,7 +172,9 @@ CREATE TABLE `leadership` (
   `name` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
-  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`description`)),
+  `description` longtext NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -185,20 +201,36 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
 (5, '2026_03_11_055125_create_accounting_blog_table', 1),
-(6, '2026_03_11_061349_create_blogs_table', 2),
-(7, '2026_03_11_061933_create_business_studies_blog_table', 3),
-(8, '2026_03_11_062458_create_collaborations_table', 4),
-(9, '2026_03_11_062908_create_country_registrations_table', 5),
-(10, '2026_03_11_063316_create_engineering_blog_table', 6),
-(11, '2026_03_11_063554_create_food_hospitality_blog_table', 7),
-(12, '2026_03_11_063818_create_leadership_table', 8),
-(13, '2026_03_12_050057_create_nursing_blog_table', 9),
-(14, '2026_03_12_050426_create_registrations_table', 10),
-(15, '2026_03_12_050907_create_reviews_table', 11),
-(16, '2026_03_12_051118_create_reviewtwo_table', 12),
-(17, '2026_03_12_051441_create_scholarship_registrations_table', 13),
-(18, '2026_03_12_051928_create_videos_table', 14),
-(19, '2026_03_12_052135_create_visa_success_table', 15);
+(6, '2026_03_11_061349_create_blogs_table', 1),
+(7, '2026_03_11_061933_create_business_studies_blog_table', 1),
+(8, '2026_03_11_062458_create_collaborations_table', 1),
+(9, '2026_03_11_062908_create_country_registrations_table', 1),
+(10, '2026_03_11_063316_create_engineering_blog_table', 1),
+(11, '2026_03_11_063554_create_food_hospitality_blog_table', 1),
+(12, '2026_03_11_063818_create_leadership_table', 1),
+(13, '2026_03_12_050057_create_nursing_blog_table', 1),
+(14, '2026_03_12_050426_create_registrations_table', 1),
+(15, '2026_03_12_050907_create_reviews_table', 1),
+(16, '2026_03_12_051118_create_reviewtwo_table', 1),
+(17, '2026_03_12_051441_create_scholarship_registrations_table', 1),
+(18, '2026_03_12_051928_create_videos_table', 1),
+(19, '2026_03_12_052135_create_visa_success_table', 1),
+(20, '2026_03_13_083158_add_meta_columns_to_reviews_table', 1),
+(21, '2026_03_14_054552_add_meta_columns_to_accounting_blog_table', 1),
+(22, '2026_03_14_060449_add_meta_columns_to_blogs_table', 1),
+(23, '2026_03_14_061947_add_meta_columns_to_business_studies_blog_table', 1),
+(24, '2026_03_14_062825_add_meta_columns_to_collaborations_table', 1),
+(25, '2026_03_14_063446_add_meta_columns_to_nursing_blog_table', 1),
+(26, '2026_03_14_064049_add_meta_columns_to_engineering_blog_table', 1),
+(27, '2026_03_14_064654_add_meta_columns_to_food_hospitality_blog_table', 1),
+(28, '2026_03_14_065152_add_meta_columns_to_leadership_table', 1),
+(29, '2026_03_14_065645_change_description_type_in_leadership_table', 1),
+(30, '2026_03_14_070126_add_meta_columns_to_reviewtwo_table', 1),
+(31, '2026_03_14_071012_add_meta_columns_to_country_registrations_table', 1),
+(32, '2026_03_14_075710_add_meta_columns_to_scholarship_registrations_table', 1),
+(33, '2026_03_14_080232_add_meta_columns_to_registrations_table', 1),
+(34, '2026_03_14_080923_add_meta_columns_to_videos_table', 1),
+(35, '2026_03_14_082430_add_meta_columns_to_visa_success_table', 2);
 
 -- --------------------------------------------------------
 
@@ -211,6 +243,8 @@ CREATE TABLE `nursing_blog` (
   `text` varchar(255) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `content` longtext NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -262,6 +296,8 @@ CREATE TABLE `registrations` (
   `preferred_destination` varchar(255) NOT NULL,
   `test_status` varchar(255) NOT NULL,
   `funding_plan` varchar(255) NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -277,6 +313,8 @@ CREATE TABLE `reviews` (
   `name` varchar(255) NOT NULL,
   `review_text` text NOT NULL,
   `rating` int(11) NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -292,6 +330,8 @@ CREATE TABLE `reviewtwo` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `review_text` text NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -309,6 +349,8 @@ CREATE TABLE `scholarship_registrations` (
   `email` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `scholarship_country` varchar(255) NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -330,13 +372,6 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin@site.com', NULL, '$2y$12$yHPeqRJlKlLeMupYcZxd1eRwBgdIfyTqLgUJrImDDTQdlDLFwq03O', NULL, '2026-03-11 00:01:13', '2026-03-11 00:01:13');
-
 -- --------------------------------------------------------
 
 --
@@ -346,9 +381,23 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 CREATE TABLE `videos` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `url` text NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `thumbnail` varchar(255) DEFAULT NULL,
+  `tags` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`tags`)),
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `videos`
+--
+
+INSERT INTO `videos` (`id`, `url`, `title`, `thumbnail`, `tags`, `meta_title`, `meta_description`, `created_at`, `updated_at`) VALUES
+(1, 'https://youtube.com/embed/uk-study-video', 'Study in UK', 'Study in UK', '[\"#studyabroad\",\"#UK\",\"#education\"]', 'Study in UK - Global Routeway', 'Complete guide for studying in UK', '2026-03-14 02:20:45', '2026-03-14 02:20:45'),
+(2, 'https://youtube.com/embed/uk-student-visa', 'UK Student Visa Guide', 'UK Visa', '[\"#visa\",\"#education\",\"#students\"]', 'UK Student Visa - Global Routeway', 'Complete guide for UK student visa', '2026-03-14 02:20:45', '2026-03-14 02:20:45'),
+(3, 'https://youtube.com/embed/nz-study-program', 'Study in New Zealand', 'Study in NZ', '[\"#studyabroad\",\"#NZ\",\"#scholarship\"]', 'Study in New Zealand - Global Routeway', 'Complete guide for studying in New Zealand', '2026-03-14 02:20:45', '2026-03-14 02:20:45');
 
 -- --------------------------------------------------------
 
@@ -360,6 +409,8 @@ CREATE TABLE `visa_success` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `image` varchar(255) NOT NULL,
   `text` text NOT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -501,7 +552,7 @@ ALTER TABLE `visa_success`
 -- AUTO_INCREMENT for table `accounting_blog`
 --
 ALTER TABLE `accounting_blog`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `blogs`
@@ -555,7 +606,7 @@ ALTER TABLE `leadership`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `nursing_blog`
@@ -597,19 +648,19 @@ ALTER TABLE `scholarship_registrations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `visa_success`
 --
 ALTER TABLE `visa_success`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
