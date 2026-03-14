@@ -15,5 +15,7 @@ class FoodHospitalityBlog extends Model
         'text',
         'image',
         'content',
+        'meta_title',
+        'meta_description'
     ];
 }

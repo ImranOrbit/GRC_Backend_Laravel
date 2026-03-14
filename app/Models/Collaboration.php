@@ -11,6 +11,8 @@ class Collaboration extends Model
 
     protected $fillable = [
         'text',
-        'image'
+        'image',
+        'meta_title',
+        'meta_description'
     ];
 }

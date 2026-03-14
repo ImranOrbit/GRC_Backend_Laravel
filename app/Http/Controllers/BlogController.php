@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use Illuminate\Support\Facades\File;
 
 class BlogController extends Controller
 {
@@ -53,7 +54,9 @@ class BlogController extends Controller
             'date' => $request->date,
             'tag' => $request->tag,
             'content' => $request->content,
-            'image' => $imagePath
+            'image' => $imagePath,
+            'meta_title' => $request->meta_title,
+            'meta_description' => $request->meta_description
         ]);
 
         return response()->json([
@@ -63,48 +66,81 @@ class BlogController extends Controller
         ]);
     }
 
-    // PUT: Edit blog
+    // POST: Edit blog (changed from PUT to POST)
     public function update(Request $request, $id)
     {
-        $blog = Blog::findOrFail($id);
+        try {
+            $blog = Blog::findOrFail($id);
 
-        $request->validate([
-            'slug'=>'required|unique:blogs,slug,'.$id,
-            'title'=>'required',
-            'excerpt'=>'required',
-            'author'=>'required',
-            'date'=>'required|date',
-            'tag'=>'required',
-            'content'=>'required',
-        ]);
+            $request->validate([
+                'slug'=>'required|unique:blogs,slug,'.$id,
+                'title'=>'required',
+                'excerpt'=>'required',
+                'author'=>'required',
+                'date'=>'required|date',
+                'tag'=>'required',
+                'content'=>'required',
+                'meta_title'=>'nullable|string',
+                'meta_description'=>'nullable|string'
+            ]);
 
-        $blog->slug = $request->slug;
-        $blog->title = $request->title;
-        $blog->excerpt = $request->excerpt;
-        $blog->author = $request->author;
-        $blog->date = $request->date;
-        $blog->tag = $request->tag;
-        $blog->content = $request->content;
+            $blog->slug = $request->slug;
+            $blog->title = $request->title;
+            $blog->excerpt = $request->excerpt;
+            $blog->author = $request->author;
+            $blog->date = $request->date;
+            $blog->tag = $request->tag;
+            $blog->content = $request->content;
+            $blog->meta_title = $request->meta_title;
+            $blog->meta_description = $request->meta_description;
 
-        if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('uploads'), $imageName);
-            $blog->image = '/uploads/'.$imageName;
-        } elseif ($request->existingImage) {
-            $blog->image = $request->existingImage;
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                // Delete old image
+                if ($blog->image && File::exists(public_path($blog->image))) {
+                    File::delete(public_path($blog->image));
+                }
+                
+                $imageName = time().'.'.$request->image->extension();
+                $request->image->move(public_path('uploads'), $imageName);
+                $blog->image = '/uploads/'.$imageName;
+            }
+
+            $blog->save();
+
+            return response()->json([
+                'message'=>'Blog updated successfully',
+                'blog' => $blog
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update blog',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $blog->save();
-
-        return response()->json(['message'=>'Blog updated successfully']);
     }
 
     // DELETE blog
     public function destroy($id)
     {
-        $blog = Blog::findOrFail($id);
-        $blog->delete();
+        try {
+            $blog = Blog::findOrFail($id);
+            
+            // Delete image
+            if ($blog->image && File::exists(public_path($blog->image))) {
+                File::delete(public_path($blog->image));
+            }
+            
+            $blog->delete();
 
-        return response()->json(['message'=>'Blog deleted successfully']);
+            return response()->json(['message'=>'Blog deleted successfully']);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete blog',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

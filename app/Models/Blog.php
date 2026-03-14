@@ -17,6 +17,8 @@ class Blog extends Model
         'author',
         'date',
         'tag',
-        'content'
+        'content',
+        'meta_title',
+        'meta_description'
     ];
 }

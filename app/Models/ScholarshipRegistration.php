@@ -12,6 +12,8 @@ class ScholarshipRegistration extends Model
         'full_name',
         'email',
         'phone',
-        'scholarship_country'
+        'scholarship_country',
+        'meta_title',
+        'meta_description'
     ];
 }

@@ -6,23 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
-{
-    Schema::create('reviews', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->text('review_text');
-        $table->integer('rating');
-        $table->string('image_url')->nullable();
-        $table->timestamps();
-    });
-}
-    /**
-     * Reverse the migrations.
-     */
+    {
+        Schema::create('reviews', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('review_text');
+            $table->integer('rating');
+            $table->string('meta_title')->nullable(); // This should be here
+            $table->text('meta_description')->nullable(); // This should be here
+            $table->string('image_url')->nullable();
+            $table->timestamps();
+        });
+    }
+
     public function down(): void
     {
         Schema::dropIfExists('reviews');

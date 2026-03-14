@@ -16,6 +16,8 @@ class Registration extends Model
         'nearest_office',
         'preferred_destination',
         'test_status',
-        'funding_plan'
+        'funding_plan',
+        'meta_title',
+        'meta_description'
     ];
 }

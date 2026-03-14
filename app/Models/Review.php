@@ -12,6 +12,8 @@ class Review extends Model
         'name',
         'review_text',
         'rating',
-        'image_url'
+        'image_url',
+        'meta_title',
+        'meta_description'
     ];
 }

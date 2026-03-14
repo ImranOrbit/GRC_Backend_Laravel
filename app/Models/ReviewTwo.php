@@ -11,6 +11,8 @@ class ReviewTwo extends Model
     protected $fillable = [
         'name',
         'review_text',
-        'image_url'
+        'image_url',
+        'meta_title',
+        'meta_description'
     ];
 }

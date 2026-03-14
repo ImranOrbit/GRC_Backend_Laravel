@@ -10,6 +10,8 @@ class VisaSuccess extends Model
 
     protected $fillable = [
         'image',
-        'text'
+        'text',
+        'meta_title',
+        'meta_description'
     ];
 }

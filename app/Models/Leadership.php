@@ -16,9 +16,12 @@ class Leadership extends Model
         'title',
         'image',
         'description',
+        'meta_title',
+        'meta_description'
     ];
 
+    // Remove JSON casting since we're storing as text now
     protected $casts = [
-        'description' => 'array', // JSON <-> Array automatic conversion
+        // 'description' => 'array', // Remove this if you want to store as text
     ];
 }

@@ -15,6 +15,8 @@ class CountryRegistration extends Model
         'name',
         'email',
         'country',
-        'universities'
+        'universities',
+        'meta_title',
+        'meta_description'
     ];
 }

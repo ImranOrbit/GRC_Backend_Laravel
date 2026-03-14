@@ -11,6 +11,8 @@ class NursingBlog extends Model
     protected $fillable = [
         'text',
         'image',
-        'content'
+        'content',
+        'meta_title',
+        'meta_description'
     ];
 }
