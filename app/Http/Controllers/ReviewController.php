@@ -4,51 +4,72 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Review;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ReviewController extends Controller
 {
-
     // POST: Submit review
     public function submitReview(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'review_text' => 'required',
-            'rating' => 'required|integer|min:1|max:5',
-            'meta_title' => 'nullable|string',
-            'meta_description' => 'nullable|string',
-            'image' => 'nullable|image|max:2048'
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required',
+                'review_text' => 'required',
+                'rating' => 'required|integer|min:1|max:5',
+                'meta_title' => 'nullable|string',
+                'meta_description' => 'nullable|string',
+                'image' => 'nullable|image|max:2048'
+            ]);
 
-        $imagePath = null;
+            $imagePath = null;
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('reviews', 'public');
+            if ($request->hasFile('image')) {
+                $imageName = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('uploads'), $imageName);
+                $imagePath = '/uploads/' . $imageName;
+                
+                // Debug: Log the image path
+                \Log::info('Image uploaded: ' . $imagePath);
+            }
+
+            $review = Review::create([
+                'name' => $request->name,
+                'review_text' => $request->review_text,
+                'rating' => $request->rating,
+                'meta_title' => $request->meta_title,
+                'meta_description' => $request->meta_description,
+                'image_url' => $imagePath
+            ]);
+
+            return response()->json([
+                'message' => 'Review submitted successfully',
+                'reviewId' => $review->id,
+                'image_url' => $imagePath
+            ], 200);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to submit review',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        Review::create([
-            'name' => $request->name,
-            'review_text' => $request->review_text,
-            'rating' => $request->rating,
-            'meta_title' => $request->meta_title,
-            'meta_description' => $request->meta_description,
-            'image_url' => $imagePath ? "/storage/" . $imagePath : null
-        ]);
-
-        return response()->json([
-            'message' => 'Review submitted successfully'
-        ]);
     }
 
     // GET: All reviews
     public function index()
     {
-        $reviews = Review::orderBy('created_at', 'DESC')->get();
-        return response()->json($reviews);
+        try {
+            $reviews = Review::orderBy('created_at', 'DESC')->get();
+            return response()->json($reviews, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch reviews',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    // POST: Update review (changed from PUT to POST)
+    // POST: Update review
     public function update(Request $request, $id)
     {
         try {
@@ -67,15 +88,19 @@ class ReviewController extends Controller
             if ($request->hasFile('image')) {
                 // Delete old image if exists
                 if ($review->image_url) {
-                    $oldPath = str_replace('/storage/', '', $review->image_url);
-                    if (Storage::disk('public')->exists($oldPath)) {
-                        Storage::disk('public')->delete($oldPath);
+                    $oldPath = public_path($review->image_url);
+                    if (File::exists($oldPath)) {
+                        File::delete($oldPath);
+                        \Log::info('Old image deleted: ' . $oldPath);
                     }
                 }
 
                 // Upload new image
-                $imagePath = $request->file('image')->store('reviews', 'public');
-                $review->image_url = "/storage/" . $imagePath;
+                $imageName = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('uploads'), $imageName);
+                $review->image_url = '/uploads/' . $imageName;
+                
+                \Log::info('New image uploaded: ' . $review->image_url);
             }
 
             // Update other fields
@@ -108,9 +133,10 @@ class ReviewController extends Controller
 
             // Delete image if exists
             if ($review->image_url) {
-                $oldPath = str_replace('/storage/', '', $review->image_url);
-                if (Storage::disk('public')->exists($oldPath)) {
-                    Storage::disk('public')->delete($oldPath);
+                $oldPath = public_path($review->image_url);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                    \Log::info('Image deleted: ' . $oldPath);
                 }
             }
 
